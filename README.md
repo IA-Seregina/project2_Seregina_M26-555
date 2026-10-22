@@ -44,5 +44,4 @@ database
 
 
 # Аскинема с примером установки пакета, запуска БД, созданием, проверкой и удалением таблицы.
-
-https://asciinema.org/a/9jLjFoKjbyigWp73
+https://asciinema.org/a/nSLzHfPCPyN9JmnD
