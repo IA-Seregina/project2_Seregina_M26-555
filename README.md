@@ -89,4 +89,4 @@ https://asciinema.org/a/nSLzHfPCPyN9JmnD
 ```
 
 ## Аскинема 
-https://asciinema.org/a/xccrAZEgCjjZOdAY
+https://asciinema.org/a/CjHMipNBgjzfSMze

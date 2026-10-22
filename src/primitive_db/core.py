@@ -1,4 +1,5 @@
 from .utils import load_table_data
+from pathlib import Path
 
 
 ALLOWED_TYPES = ("int", "str", "bool")
@@ -37,6 +38,11 @@ def drop_table(metadata, table_name):
 
     if table_name not in metadata:
         raise ValueError(f'Ошибка: Таблица "{table_name}" не существует.')
+
+    table_path = Path("../data") / f"{table_name}.json"
+
+    if table_path.exists():
+        table_path.unlink()
 
     del metadata[table_name]
 
