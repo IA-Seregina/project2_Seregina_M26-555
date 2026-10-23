@@ -74,12 +74,16 @@ def run():
 
             match command:
                 case "create_table":
-                    metadata = create_table(metadata, params[0], params[1:])
-                    save_metadata(METADATA_FILE_NAME, metadata)
+                    result = create_table(metadata, params[0], params[1:])
+
+                    if result is not None:
+                        save_metadata(METADATA_FILE_NAME, result)
 
                 case "drop_table":
-                    metadata = drop_table(metadata, params[0])
-                    save_metadata(METADATA_FILE_NAME, metadata)
+                    result = drop_table(metadata, params[0])
+
+                    if result is not None:
+                        save_metadata(METADATA_FILE_NAME, result)
 
                 case "list_tables":
                     for table_name in metadata:
@@ -112,12 +116,14 @@ def run():
                             values.append(int(value))
 
                     table_data = insert(metadata, table_name, values)
-                    save_table_data(table_name, table_data)
 
-                    print(
-                        f'Запись с ID={table_data[-1]["ID"]} '
-                        f'успешно добавлена в таблицу "{table_name}".'
-                    )
+                    if table_data is not None:
+                        save_table_data(table_name, table_data)
+
+                        print(
+                            f'Запись с ID={table_data[-1]["ID"]} '
+                            f'успешно добавлена в таблицу "{table_name}".'
+                        )
 
                 case "select":
                     parts = re.fullmatch(
@@ -138,13 +144,14 @@ def run():
                     table_data = load_table_data(table_name)
                     result = select(table_data, where_clause)
 
-                    table = PrettyTable()
-                    table.field_names = list(metadata[table_name])
+                    if result is not None:
+                        table = PrettyTable()
+                        table.field_names = list(metadata[table_name])
 
-                    for row in result:
-                        table.add_row([row[column] for column in table.field_names])
+                        for row in result:
+                            table.add_row([row[column] for column in table.field_names])
 
-                    print(table)
+                        print(table)
 
                 case "update":
                     parts = re.fullmatch(
@@ -178,14 +185,16 @@ def run():
                     table_data = load_table_data(table_name)
                     matched = select(table_data, where_clause)
 
-                    table_data = update(table_data, set_clause, where_clause)
-                    save_table_data(table_name, table_data)
+                    result = update(table_data, set_clause, where_clause)
 
-                    for row in matched:
-                        print(
-                            f'Запись с ID={row["ID"]} в таблице '
-                            f'"{table_name}" успешно обновлена.'
-                        )
+                    if result is not None:
+                        save_table_data(table_name, result)
+
+                        for row in matched:
+                            print(
+                                f'Запись с ID={row["ID"]} в таблице '
+                                f'"{table_name}" успешно обновлена.'
+                            )
 
                 case "delete":
                     parts = re.fullmatch(
@@ -206,14 +215,16 @@ def run():
                     table_data = load_table_data(table_name)
                     matched = select(table_data, where_clause)
 
-                    table_data = delete(table_data, where_clause)
-                    save_table_data(table_name, table_data)
+                    result = delete(table_data, where_clause)
 
-                    for row in matched:
-                        print(
-                            f'Запись с ID={row["ID"]} успешно удалена '
-                            f'из таблицы "{table_name}".'
-                        )
+                    if result is not None:
+                        save_table_data(table_name, result)
+
+                        for row in matched:
+                            print(
+                                f'Запись с ID={row["ID"]} успешно удалена '
+                                f'из таблицы "{table_name}".'
+                            )
 
                 case "info":
                     table_name = params[0]

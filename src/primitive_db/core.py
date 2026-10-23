@@ -47,7 +47,7 @@ def drop_table(metadata, table_name):
     if table_name not in metadata:
         raise ValueError(f'Ошибка: Таблица "{table_name}" не существует.')
 
-    table_path = Path("../data") / f"{table_name}.json"
+    table_path = Path("data") / f"{table_name}.json"
 
     if table_path.exists():
         table_path.unlink()
