@@ -1,9 +1,10 @@
-import shlex
 import re
-from prettytable import PrettyTable
-from .core import create_table, drop_table, insert, select, update, delete
-from .utils import load_metadata, save_metadata, load_table_data, save_table_data
+import shlex
 
+from prettytable import PrettyTable
+
+from .core import create_table, delete, drop_table, insert, select, update
+from .utils import load_metadata, load_table_data, save_metadata, save_table_data
 
 METADATA_FILE_NAME = "db_meta.json"
 
@@ -30,11 +31,24 @@ def print_help():
 
     print("\n***Операции с данными***")
     print("\nФункции:")
-    print("<command> insert into <имя_таблицы> values (<значение1>, <значение2>, ...) - создать запись.")
-    print("<command> select from <имя_таблицы> where <столбец> = <значение> - прочитать записи по условию.")
+    print(
+        "<command> insert into <имя_таблицы> "
+        "values (<значение1>, <значение2>, ...) - создать запись."
+    )
+    print(
+        "<command> select from <имя_таблицы> "
+        "where <столбец> = <значение> - прочитать записи по условию."
+    )
     print("<command> select from <имя_таблицы> - прочитать все записи.")
-    print("<command> update <имя_таблицы> set <столбец1> = <новое_значение1> where <столбец_условия> = <значение_условия> - обновить запись.")
-    print("<command> delete from <имя_таблицы> where <столбец> = <значение> - удалить запись.")
+    print(
+        "<command> update <имя_таблицы> "
+        "set <столбец1> = <новое_значение1> "
+        "where <столбец_условия> = <значение_условия> - обновить запись."
+    )
+    print(
+        "<command> delete from <имя_таблицы> "
+        "where <столбец> = <значение> - удалить запись."
+    )
     print("<command> info <имя_таблицы> - вывести информацию о таблице.")
     print("<command> exit - выход из программы")
     print("<command> help- справочная информация\n")
@@ -52,7 +66,9 @@ def parse_clause(clause):
         try:
             value = int(value)
         except ValueError:
-            raise ValueError(f"Некорректное значение: {value}. Попробуйте снова.") from None
+            raise ValueError(
+                f"Некорректное значение: {value}. Попробуйте снова."
+            )from None
 
     return {column.strip(): value}
 

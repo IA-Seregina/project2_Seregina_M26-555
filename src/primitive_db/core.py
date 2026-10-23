@@ -1,7 +1,13 @@
-from .utils import load_table_data
 from pathlib import Path
-from primitive_db .decorators import handle_db_errors, confirm_action, log_time, create_cacher
 
+from primitive_db .decorators import (
+    confirm_action,
+    create_cacher,
+    handle_db_errors,
+    log_time,
+)
+
+from .utils import load_table_data
 
 cache_result = create_cacher()
 
@@ -34,7 +40,9 @@ def create_table(metadata, table_name, columns):
 
     metadata[table_name] = table_columns
 
-    columns_desc = ", ".join(f"{name}:{data_type}" for name, data_type in table_columns.items())
+    columns_desc = ", ".join(
+        f"{name}:{data_type}" 
+        for name, data_type in table_columns.items())
     print(f"Таблица '{table_name}' успешно создана со столбцами: {columns_desc}")
 
     return metadata
@@ -78,7 +86,7 @@ def insert(metadata, table_name, values):
     types = {"int": int, "str": str, "bool": bool}
 
     for value, data_type in zip(values, columns.values()):
-        if type(value) != types[data_type]:
+        if type(value) is not types[data_type]:
             raise ValueError(f"Некорректное значение: {value}. Попробуйте снова.")
 
     data = load_table_data(table_name)
