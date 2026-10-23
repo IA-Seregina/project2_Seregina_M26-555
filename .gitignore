@@ -5,3 +5,4 @@ __pycache__/
 db_meta.json
 data/
 .ruff_cache
+demo.cast
